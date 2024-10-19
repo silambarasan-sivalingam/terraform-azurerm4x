@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "CLUSTER_NAME": {
+            "type": "String",
+            "defaultValue": "[variables('cluster_name')]"
+        },
+        "administratorLogin": {
+            "type": "String",
+            "defaultValue": "[variables('administrator_login')]"
+        },
+        "administratorLoginPassword": {
+            "type": "String",
+            "defaultValue": "[variables('administrator_login_password')]"
+        },
+        "location": {
+            "type": "String",
+            "defaultValue": "[variables('location')]"
+        },
+        "serverVersion": {
+            "type": "String",
+            "defaultValue": "[variables('server_version')]"
+        },
+        "sku": {
+            "type": "String",
+            "defaultValue": "[variables('sku')]"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.DocumentDB/mongoClusters",
+            "apiVersion": "2023-11-15-preview",
+            "name": "[parameters('CLUSTER_NAME')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "clusterStatus": "Ready",
+                "administratorLogin": "[parameters('administratorLogin')]",
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "serverVersion": "[parameters('serverVersion')]",
+                "nodeGroupSpecs": [
+                    {
+                        "kind": "Shard",
+                        "sku": "[parameters('sku')]",
+                        "diskSizeGB": 128,
+                        "enableHa": false,
+                        "nodeCount": 1
+                    }
+                ]
+            }
+        }
+    ]
+}
